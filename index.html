@@ -10,6 +10,21 @@
 
     <p id="demo"></p>
 
+    <form name="contact" netlify>
+        <p>
+            <label>Name <input type="text" name="name" /></label>
+        </p>
+        <p>
+            <label>Email <input type="email" name="email" /></label>
+        </p>
+        <p>
+            <!-- Hidden input fields for latitude and longitude -->
+            <input type="hidden" name="latitude" id="latitude" />
+            <input type="hidden" name="longitude" id="longitude" />
+            <button type="submit">Send</button>
+        </p>
+    </form>
+
     <script>
         const x = document.getElementById("demo");
 
@@ -25,33 +40,9 @@
             x.innerHTML = "Latitude: " + position.coords.latitude +
                 "<br>Longitude: " + position.coords.longitude;
 
-            // Send coordinates to the server-side script for saving
-            saveCoordinatesOnServer(position.coords.latitude, position.coords.longitude);
-        }
-
-        function saveCoordinatesOnServer(latitude, longitude) {
-            // Create a new XMLHttpRequest object
-            const xhr = new XMLHttpRequest();
-
-            // Define the PHP script URL on the server
-            const url = 'save_coordinates.php';
-
-            // Create a JSON object with the coordinates
-            const data = JSON.stringify({ latitude, longitude });
-
-            // Configure the request
-            xhr.open('POST', url, true);
-            xhr.setRequestHeader('Content-type', 'application/json');
-
-            // Send the request
-            xhr.send(data);
-
-            // Handle the response (optional)
-            xhr.onreadystatechange = function () {
-                if (xhr.readyState === 4 && xhr.status === 200) {
-                    // Handle the response here if needed
-                }
-            };
+            // Populate hidden input fields with latitude and longitude
+            document.getElementById("latitude").value = position.coords.latitude;
+            document.getElementById("longitude").value = position.coords.longitude;
         }
     </script>
 
