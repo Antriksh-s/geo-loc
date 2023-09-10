@@ -4,7 +4,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $longitude = $_POST["longitude"];
 
     // Define your email parameters here (e.g., recipient, subject, message)
-    $to = "recipient@example.com";
+    $to = "singhantriksh257@gmail.com";
     $subject = "Geolocation Data";
     $message = "Latitude: $latitude\r\nLongitude: $longitude";
 
