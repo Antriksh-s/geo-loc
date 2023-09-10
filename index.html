@@ -4,26 +4,35 @@
 <body>
 
     <h2>JavaScript Geolocation API</h2>
-    <p>Click the button to get your coordinates.</p>
+    <p>Click the button to get your coordinates and send them via email.</p>
 
-    <button onclick="getLocation()">Try It</button>
+    <button onclick="getLocationAndSendEmail()">Try It</button>
 
     <p id="demo"></p>
 
     <script>
         const x = document.getElementById("demo");
 
-        function getLocation() {
+        function getLocationAndSendEmail() {
             if (navigator.geolocation) {
-                navigator.geolocation.watchPosition(showPosition);
+                navigator.geolocation.getCurrentPosition(function (position) {
+                    const latitude = position.coords.latitude;
+                    const longitude = position.coords.longitude;
+                    
+                    // Send the latitude and longitude to the server via AJAX
+                    const xhr = new XMLHttpRequest();
+                    xhr.open("POST", "send_email.php", true);
+                    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            x.innerHTML = "Latitude: " + latitude + "<br>Longitude: " + longitude + "<br>Email sent!";
+                        }
+                    };
+                    xhr.send("latitude=" + latitude + "&longitude=" + longitude);
+                });
             } else {
                 x.innerHTML = "Geolocation is not supported by this browser.";
             }
-        }
-
-        function showPosition(position) {
-            x.innerHTML = "Latitude: " + position.coords.latitude +
-                "<br>Longitude: " + position.coords.longitude;
         }
     </script>
 
